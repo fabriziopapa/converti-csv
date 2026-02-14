@@ -1,3 +1,5 @@
+import Form from 'react-bootstrap/Form';
+
 interface FileUploadProps {
   onFileSelect: (file: File | null) => void;
   accept?: string;
@@ -19,21 +21,39 @@ export function FileUpload({
 
   return (
     <div className="mb-4">
-      <label
+      <Form.Label
         htmlFor="csv-upload"
         className={`
-          block border-2 border-dashed rounded-lg p-8 text-center cursor-pointer
-          transition-colors duration-200
+          d-block border border-2 border-dashed rounded p-4 text-center
           ${disabled
-            ? 'border-gray-200 bg-gray-50 cursor-not-allowed'
-            : 'border-gray-300 hover:border-blue-500 hover:bg-blue-50'
+            ? 'border-secondary bg-light cursor-not-allowed opacity-50'
+            : 'border-secondary cursor-pointer'
           }
         `}
+        style={{
+          cursor: disabled ? 'not-allowed' : 'pointer',
+          transition: 'all 0.2s',
+          borderStyle: 'dashed'
+        }}
+        onMouseEnter={(e) => {
+          if (!disabled) {
+            e.currentTarget.style.borderColor = 'var(--bs-primary)';
+            e.currentTarget.style.backgroundColor = 'rgba(13, 110, 253, 0.05)';
+          }
+        }}
+        onMouseLeave={(e) => {
+          if (!disabled) {
+            e.currentTarget.style.borderColor = 'var(--bs-secondary)';
+            e.currentTarget.style.backgroundColor = 'transparent';
+          }
+        }}
       >
-        <div className="flex flex-col items-center">
+        <div className="d-flex flex-column align-items-center">
           {/* Icon */}
           <svg
-            className={`h-12 w-12 mb-3 ${disabled ? 'text-gray-300' : 'text-gray-400'}`}
+            width="48"
+            height="48"
+            className={`mb-3 ${disabled ? 'text-muted' : 'text-secondary'}`}
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -47,23 +67,23 @@ export function FileUpload({
           </svg>
 
           {/* Text */}
-          <p className={`text-sm ${disabled ? 'text-gray-400' : 'text-gray-600'}`}>
-            <span className="font-semibold">Clicca per caricare</span> o trascina qui
+          <p className={`small mb-1 ${disabled ? 'text-muted' : 'text-secondary'}`}>
+            <span className="fw-semibold">Clicca per caricare</span> o trascina qui
           </p>
-          <p className={`text-xs mt-1 ${disabled ? 'text-gray-300' : 'text-gray-500'}`}>
+          <p className={`mb-0 ${disabled ? 'text-muted' : 'text-secondary'}`} style={{ fontSize: '0.75rem' }}>
             File CSV (delimitatore: punto e virgola)
           </p>
         </div>
 
-        <input
+        <Form.Control
           id="csv-upload"
           type="file"
           accept={accept}
           onChange={handleChange}
           disabled={disabled}
-          className="hidden"
+          className="d-none"
         />
-      </label>
+      </Form.Label>
     </div>
   );
 }

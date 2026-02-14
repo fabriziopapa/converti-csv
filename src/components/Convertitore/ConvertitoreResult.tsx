@@ -1,3 +1,5 @@
+import Alert from 'react-bootstrap/Alert';
+import Button from 'react-bootstrap/Button';
 import type { ConvertitoreResult } from '../../types/convertitore.types';
 
 interface ConvertitoreResultProps {
@@ -11,12 +13,14 @@ interface ConvertitoreResultProps {
  */
 export function ConvertitoreResult({ result, onReset }: ConvertitoreResultProps) {
   return (
-    <div className="mt-6 bg-green-50 border border-green-200 rounded-lg p-6">
+    <Alert variant="success" className="mt-4 mb-0">
       {/* Success Icon + Title */}
-      <div className="flex items-start">
+      <div className="d-flex align-items-start">
         <div className="flex-shrink-0">
           <svg
-            className="h-6 w-6 text-green-600"
+            width="24"
+            height="24"
+            className="text-success"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -30,37 +34,37 @@ export function ConvertitoreResult({ result, onReset }: ConvertitoreResultProps)
           </svg>
         </div>
 
-        <div className="ml-3 flex-1">
-          <h3 className="text-lg font-semibold text-green-800">
+        <div className="ms-3 flex-grow-1">
+          <Alert.Heading as="h4" className="h5 mb-3">
             File generato con successo!
-          </h3>
+          </Alert.Heading>
 
           {/* Details */}
-          <div className="mt-4 space-y-2 text-sm text-green-700">
-            <div className="flex justify-between">
-              <span className="font-medium">Nome file:</span>
-              <span className="font-mono">{result.fileName}</span>
+          <div className="small mb-3">
+            <div className="d-flex justify-content-between py-1">
+              <span className="fw-medium">Nome file:</span>
+              <code className="text-success">{result.fileName}</code>
             </div>
 
-            <div className="flex justify-between">
-              <span className="font-medium">Identificativo:</span>
-              <span className="font-mono">{result.identificativo}</span>
+            <div className="d-flex justify-content-between py-1">
+              <span className="fw-medium">Identificativo:</span>
+              <code className="text-success">{result.identificativo}</code>
             </div>
 
-            <div className="flex justify-between">
-              <span className="font-medium">Progressivo:</span>
-              <span className="font-mono">{result.progressivo}</span>
+            <div className="d-flex justify-content-between py-1">
+              <span className="fw-medium">Progressivo:</span>
+              <code className="text-success">{result.progressivo}</code>
             </div>
 
-            <div className="flex justify-between">
-              <span className="font-medium">Record generati:</span>
-              <span className="font-mono">{result.numeroRecord}</span>
+            <div className="d-flex justify-content-between py-1">
+              <span className="fw-medium">Record generati:</span>
+              <code className="text-success">{result.numeroRecord}</code>
             </div>
           </div>
 
           {/* Info Message */}
-          <div className="mt-4 text-sm text-green-700">
-            <p>
+          <div className="small text-success-emphasis mb-3">
+            <p className="mb-0">
               📥 Il file è stato scaricato automaticamente.
               <br />
               Controlla la cartella Download del tuo browser.
@@ -69,15 +73,16 @@ export function ConvertitoreResult({ result, onReset }: ConvertitoreResultProps)
 
           {/* Reset Button */}
           {onReset && (
-            <button
+            <Button
+              variant="success"
               onClick={onReset}
-              className="mt-4 w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+              className="w-100"
             >
               Genera un altro file
-            </button>
+            </Button>
           )}
         </div>
       </div>
-    </div>
+    </Alert>
   );
 }

@@ -1,3 +1,5 @@
+import Alert from 'react-bootstrap/Alert';
+import Button from 'react-bootstrap/Button';
 import type { HRSuiteResult } from '../../types/hrsuite.types';
 
 interface HRSuiteResultProps {
@@ -12,13 +14,15 @@ export function HRSuiteResultComponent({ result, onReset }: HRSuiteResultProps) 
   const hasWarnings = result.nominativiNonTrovati.length > 0;
 
   return (
-    <div className="mt-6 space-y-4">
+    <div className="mt-4">
       {/* Success Card */}
-      <div className="bg-green-50 border border-green-200 rounded-lg p-6">
-        <div className="flex items-start">
+      <Alert variant="success" className="mb-3">
+        <div className="d-flex align-items-start">
           <div className="flex-shrink-0">
             <svg
-              className="h-6 w-6 text-green-600"
+              width="24"
+              height="24"
+              className="text-success"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -32,34 +36,34 @@ export function HRSuiteResultComponent({ result, onReset }: HRSuiteResultProps) 
             </svg>
           </div>
 
-          <div className="ml-3 flex-1">
-            <h3 className="text-lg font-semibold text-green-800">
+          <div className="ms-3 flex-grow-1">
+            <Alert.Heading as="h4" className="h5 mb-3">
               File HRSuite generato con successo!
-            </h3>
+            </Alert.Heading>
 
             {/* Details */}
-            <div className="mt-4 space-y-2 text-sm text-green-700">
-              <div className="flex justify-between">
-                <span className="font-medium">Nome file:</span>
-                <span className="font-mono">{result.fileName}</span>
+            <div className="small mb-3">
+              <div className="d-flex justify-content-between py-1">
+                <span className="fw-medium">Nome file:</span>
+                <code className="text-success">{result.fileName}</code>
               </div>
 
-              <div className="flex justify-between">
-                <span className="font-medium">Righe processate:</span>
-                <span className="font-mono">{result.rowsProcessed}</span>
+              <div className="d-flex justify-content-between py-1">
+                <span className="fw-medium">Righe processate:</span>
+                <code className="text-success">{result.rowsProcessed}</code>
               </div>
 
               {result.rowsSkipped > 0 && (
-                <div className="flex justify-between">
-                  <span className="font-medium">Righe skippate:</span>
-                  <span className="font-mono text-yellow-700">{result.rowsSkipped}</span>
+                <div className="d-flex justify-content-between py-1">
+                  <span className="fw-medium">Righe skippate:</span>
+                  <code className="text-warning">{result.rowsSkipped}</code>
                 </div>
               )}
             </div>
 
             {/* Info Message */}
-            <div className="mt-4 text-sm text-green-700">
-              <p>
+            <div className="small text-success-emphasis mb-3">
+              <p className="mb-0">
                 📥 Il file CSV è stato scaricato automaticamente.
                 <br />
                 Controlla la cartella Download del tuo browser.
@@ -68,24 +72,27 @@ export function HRSuiteResultComponent({ result, onReset }: HRSuiteResultProps) 
 
             {/* Reset Button */}
             {onReset && (
-              <button
+              <Button
+                variant="success"
                 onClick={onReset}
-                className="mt-4 w-full bg-green-600 hover:bg-green-700 text-white font-medium py-2 px-4 rounded-lg transition-colors"
+                className="w-100"
               >
                 Genera un altro file
-              </button>
+              </Button>
             )}
           </div>
         </div>
-      </div>
+      </Alert>
 
       {/* Warning Card - Nominativi non trovati */}
       {hasWarnings && (
-        <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-6">
-          <div className="flex items-start">
+        <Alert variant="warning" className="mb-0">
+          <div className="d-flex align-items-start">
             <div className="flex-shrink-0">
               <svg
-                className="h-6 w-6 text-yellow-600"
+                width="24"
+                height="24"
+                className="text-warning"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -99,32 +106,36 @@ export function HRSuiteResultComponent({ result, onReset }: HRSuiteResultProps) 
               </svg>
             </div>
 
-            <div className="ml-3 flex-1">
-              <h3 className="text-lg font-semibold text-yellow-800">
+            <div className="ms-3 flex-grow-1">
+              <Alert.Heading as="h4" className="h5 mb-2">
                 Attenzione: Alcuni nominativi non trovati
-              </h3>
+              </Alert.Heading>
 
-              <p className="mt-2 text-sm text-yellow-700">
+              <p className="small mb-3">
                 I seguenti nominativi presenti nel CSV Compensi <strong>non sono stati trovati</strong> nel CSV Anagrafico
                 e quindi sono stati esclusi dal file generato:
               </p>
 
-              <ul className="mt-3 space-y-1 text-sm text-yellow-800 max-h-40 overflow-y-auto bg-yellow-100 rounded p-3">
-                {result.nominativiNonTrovati.map((nominativo, index) => (
-                  <li key={index} className="flex items-center">
-                    <span className="text-yellow-600 mr-2">•</span>
-                    <span className="font-mono">{nominativo}</span>
-                  </li>
-                ))}
-              </ul>
+              <div
+                className="small bg-warning bg-opacity-25 rounded p-3 mb-3"
+                style={{ maxHeight: '160px', overflowY: 'auto' }}
+              >
+                <ul className="mb-0 ps-3">
+                  {result.nominativiNonTrovati.map((nominativo, index) => (
+                    <li key={index} className="font-monospace mb-1">
+                      {nominativo}
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-              <p className="mt-3 text-xs text-yellow-600">
+              <p className="mb-0 text-warning-emphasis" style={{ fontSize: '0.75rem' }}>
                 💡 Verifica che i nominativi siano scritti esattamente allo stesso modo in entrambi i CSV
                 (attenzione a spazi, maiuscole/minuscole, caratteri speciali).
               </p>
             </div>
           </div>
-        </div>
+        </Alert>
       )}
     </div>
   );

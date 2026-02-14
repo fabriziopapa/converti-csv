@@ -1,5 +1,12 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
+import Spinner from 'react-bootstrap/Spinner';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import { DualFileUpload } from './DualFileUpload';
 import { ScorporoToggle } from './ScorporoToggle';
 import { HRSuiteResultComponent } from './HRSuiteResult';
@@ -81,276 +88,273 @@ export function HRSuiteForm() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div style={{ maxWidth: '1000px', margin: '0 auto' }}>
       {/* Card principale */}
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">
-          HRSuite - Elaborazione Compensi
-        </h2>
+      <Card className="shadow-sm">
+        <Card.Body className="p-4">
+          <Card.Title as="h2" className="mb-3">
+            HRSuite - Elaborazione Compensi
+          </Card.Title>
 
-        <p className="text-gray-600 mb-6">
-          Unisci due file CSV (Anagrafico + Compensi) per generare un file CSV
-          nel formato richiesto da HRSuite con calcolo scorporo contributivo.
-        </p>
+          <Card.Text className="text-muted mb-4">
+            Unisci due file CSV (Anagrafico + Compensi) per generare un file CSV
+            nel formato richiesto da HRSuite con calcolo scorporo contributivo.
+          </Card.Text>
 
-        {!result && (
-          <form onSubmit={handleSubmit}>
-            {/* Dual File Upload */}
-            <DualFileUpload
-              anagraficFile={anagraficFile}
-              compensiFile={compensiFile}
-              onAnagraficSelect={setAnagraficFile}
-              onCompensiSelect={setCompensiFile}
-              disabled={isProcessing}
-            />
+          {!result && (
+            <Form onSubmit={handleSubmit}>
+              {/* Dual File Upload */}
+              <DualFileUpload
+                anagraficFile={anagraficFile}
+                compensiFile={compensiFile}
+                onAnagraficSelect={setAnagraficFile}
+                onCompensiSelect={setCompensiFile}
+                disabled={isProcessing}
+              />
 
-            {/* Scorporo Toggle */}
-            <ScorporoToggle
-              enabled={scorporoEnabled}
-              onChange={setScorporoEnabled}
-              disabled={isProcessing}
-            />
+              {/* Scorporo Toggle */}
+              <ScorporoToggle
+                enabled={scorporoEnabled}
+                onChange={setScorporoEnabled}
+                disabled={isProcessing}
+              />
 
-            {/* Form Fields - Grid Layout */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
-              {/* Identificativo Provvedimento */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Identificativo Provvedimento
-                  <span className="text-gray-500 font-normal ml-1">(opzionale)</span>
-                </label>
-                <input
-                  type="text"
-                  name="identificativoProvvedimento"
-                  value={formValues.identificativoProvvedimento}
-                  onChange={handleChange}
-                  disabled={isProcessing}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
-                  placeholder="Es. PROV2025001"
-                />
-              </div>
-
-              {/* Anno Competenza */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Anno Competenza *
-                </label>
-                <input
-                  type="number"
-                  name="annoCompetenza"
-                  value={formValues.annoCompetenza}
-                  onChange={handleChange}
-                  required
-                  disabled={isProcessing}
-                  min="2000"
-                  max="2100"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
-                />
-              </div>
-
-              {/* Mese Competenza */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Mese Competenza *
-                  <span className="text-gray-500 font-normal ml-1">(01-12)</span>
-                </label>
-                <input
-                  type="text"
-                  name="meseCompetenza"
-                  value={formValues.meseCompetenza}
-                  onChange={handleChange}
-                  required
-                  disabled={isProcessing}
-                  pattern="(0[1-9]|1[0-2])"
-                  maxLength={2}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
-                  placeholder="Es. 01"
-                />
-              </div>
-
-              {/* Codice Voce */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Codice Voce *
-                </label>
-                <input
-                  type="text"
-                  name="codiceVoce"
-                  value={formValues.codiceVoce}
-                  onChange={handleChange}
-                  required
-                  disabled={isProcessing}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
-                  placeholder="Es. 0001"
-                />
-              </div>
-
-              {/* Codice Capitolo */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Codice Capitolo *
-                </label>
-                <input
-                  type="text"
-                  name="codiceCapitolo"
-                  value={formValues.codiceCapitolo}
-                  onChange={handleChange}
-                  required
-                  disabled={isProcessing}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
-                  placeholder="Es. 1234"
-                />
-              </div>
-
-              {/* Centro di Costo */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Centro di Costo
-                  <span className="text-gray-500 font-normal ml-1">(opzionale)</span>
-                </label>
-                <input
-                  type="text"
-                  name="codiceCentroDiCosto"
-                  value={formValues.codiceCentroDiCosto}
-                  onChange={handleChange}
-                  disabled={isProcessing}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
-                />
-              </div>
-
-              {/* Riferimento */}
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Riferimento
-                  <span className="text-gray-500 font-normal ml-1">(opzionale)</span>
-                </label>
-                <input
-                  type="text"
-                  name="riferimento"
-                  value={formValues.riferimento}
-                  onChange={handleChange}
-                  disabled={isProcessing}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
-                  placeholder="Verrà formattato come TL@testo@"
-                />
-              </div>
-
-              {/* Note */}
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">
-                  Note
-                  <span className="text-gray-500 font-normal ml-1">(opzionale)</span>
-                </label>
-                <input
-                  type="text"
-                  name="note"
-                  value={formValues.note}
-                  onChange={handleChange}
-                  disabled={isProcessing}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent disabled:bg-gray-100"
-                />
-              </div>
-            </div>
-
-            {/* Error Alert */}
-            {error && (
-              <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-                <div className="flex items-start">
-                  <svg
-                    className="h-5 w-5 text-red-600 mr-2 mt-0.5 flex-shrink-0"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              {/* Form Fields - Grid Layout */}
+              <Row className="mb-4">
+                {/* Identificativo Provvedimento */}
+                <Col md={6} className="mb-3">
+                  <Form.Group>
+                    <Form.Label className="small fw-medium">
+                      Identificativo Provvedimento
+                      <span className="text-muted fw-normal ms-1">(opzionale)</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="identificativoProvvedimento"
+                      value={formValues.identificativoProvvedimento}
+                      onChange={handleChange}
+                      disabled={isProcessing}
+                      placeholder="Es. PROV2025001"
                     />
-                  </svg>
-                  <div className="text-sm text-red-800">
-                    <p className="font-medium mb-1">Errore</p>
-                    <p className="whitespace-pre-wrap">{error}</p>
-                  </div>
-                </div>
-              </div>
-            )}
+                  </Form.Group>
+                </Col>
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={!anagraficFile || !compensiFile || isProcessing}
-              className={`
-                w-full py-3 px-6 rounded-lg font-semibold text-white
-                transition-all duration-200
-                ${!anagraficFile || !compensiFile || isProcessing
-                  ? 'bg-gray-300 cursor-not-allowed'
-                  : 'bg-blue-600 hover:bg-blue-700 hover:shadow-lg'
-                }
-              `}
-            >
-              {isProcessing ? (
-                <span className="flex items-center justify-center">
-                  <svg
-                    className="animate-spin h-5 w-5 mr-3"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
+                {/* Anno Competenza */}
+                <Col md={6} className="mb-3">
+                  <Form.Group>
+                    <Form.Label className="small fw-medium">
+                      Anno Competenza *
+                    </Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="annoCompetenza"
+                      value={formValues.annoCompetenza}
+                      onChange={handleChange}
+                      required
+                      disabled={isProcessing}
+                      min="2000"
+                      max="2100"
+                    />
+                  </Form.Group>
+                </Col>
+
+                {/* Mese Competenza */}
+                <Col md={6} className="mb-3">
+                  <Form.Group>
+                    <Form.Label className="small fw-medium">
+                      Mese Competenza *
+                      <span className="text-muted fw-normal ms-1">(01-12)</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="meseCompetenza"
+                      value={formValues.meseCompetenza}
+                      onChange={handleChange}
+                      required
+                      disabled={isProcessing}
+                      pattern="(0[1-9]|1[0-2])"
+                      maxLength={2}
+                      placeholder="Es. 01"
+                    />
+                  </Form.Group>
+                </Col>
+
+                {/* Codice Voce */}
+                <Col md={6} className="mb-3">
+                  <Form.Group>
+                    <Form.Label className="small fw-medium">
+                      Codice Voce *
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="codiceVoce"
+                      value={formValues.codiceVoce}
+                      onChange={handleChange}
+                      required
+                      disabled={isProcessing}
+                      placeholder="Es. 0001"
+                    />
+                  </Form.Group>
+                </Col>
+
+                {/* Codice Capitolo */}
+                <Col md={6} className="mb-3">
+                  <Form.Group>
+                    <Form.Label className="small fw-medium">
+                      Codice Capitolo *
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="codiceCapitolo"
+                      value={formValues.codiceCapitolo}
+                      onChange={handleChange}
+                      required
+                      disabled={isProcessing}
+                      placeholder="Es. 1234"
+                    />
+                  </Form.Group>
+                </Col>
+
+                {/* Centro di Costo */}
+                <Col md={6} className="mb-3">
+                  <Form.Group>
+                    <Form.Label className="small fw-medium">
+                      Centro di Costo
+                      <span className="text-muted fw-normal ms-1">(opzionale)</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="codiceCentroDiCosto"
+                      value={formValues.codiceCentroDiCosto}
+                      onChange={handleChange}
+                      disabled={isProcessing}
+                    />
+                  </Form.Group>
+                </Col>
+
+                {/* Riferimento */}
+                <Col md={6} className="mb-3">
+                  <Form.Group>
+                    <Form.Label className="small fw-medium">
+                      Riferimento
+                      <span className="text-muted fw-normal ms-1">(opzionale)</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="riferimento"
+                      value={formValues.riferimento}
+                      onChange={handleChange}
+                      disabled={isProcessing}
+                      placeholder="Verrà formattato come TL@testo@"
+                    />
+                  </Form.Group>
+                </Col>
+
+                {/* Note */}
+                <Col xs={12}>
+                  <Form.Group>
+                    <Form.Label className="small fw-medium">
+                      Note
+                      <span className="text-muted fw-normal ms-1">(opzionale)</span>
+                    </Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="note"
+                      value={formValues.note}
+                      onChange={handleChange}
+                      disabled={isProcessing}
+                    />
+                  </Form.Group>
+                </Col>
+              </Row>
+
+              {/* Error Alert */}
+              {error && (
+                <Alert variant="danger" className="mb-4">
+                  <div className="d-flex align-items-start">
+                    <svg
+                      width="20"
+                      height="20"
+                      className="text-danger me-2 flex-shrink-0 mt-1"
+                      fill="none"
                       stroke="currentColor"
-                      strokeWidth="4"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    />
-                  </svg>
-                  Generazione in corso...
-                </span>
-              ) : (
-                'Genera File HRSuite'
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <div className="small">
+                      <p className="fw-medium mb-1">Errore</p>
+                      <p className="mb-0" style={{ whiteSpace: 'pre-wrap' }}>{error}</p>
+                    </div>
+                  </div>
+                </Alert>
               )}
-            </button>
-          </form>
-        )}
 
-        {/* Result */}
-        {result && (
-          <HRSuiteResultComponent
-            result={result}
-            onReset={handleReset}
-          />
-        )}
-      </div>
+              {/* Submit Button */}
+              <Button
+                type="submit"
+                variant="primary"
+                disabled={!anagraficFile || !compensiFile || isProcessing}
+                className="w-100 py-3"
+              >
+                {isProcessing ? (
+                  <>
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                      className="me-2"
+                    />
+                    Generazione in corso...
+                  </>
+                ) : (
+                  'Genera File HRSuite'
+                )}
+              </Button>
+            </Form>
+          )}
+
+          {/* Result */}
+          {result && (
+            <HRSuiteResultComponent
+              result={result}
+              onReset={handleReset}
+            />
+          )}
+        </Card.Body>
+      </Card>
 
       {/* Info aggiuntive */}
-      <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-        <h3 className="text-sm font-semibold text-gray-700 mb-2">
-          ℹ️ Formato CSV richiesto
-        </h3>
-        <div className="text-sm text-gray-600 space-y-2">
-          <div>
-            <span className="font-medium">CSV Anagrafico:</span>
-            <ul className="ml-4 mt-1">
-              <li>• Colonne: <code className="px-1 bg-gray-200 rounded">NOMINATIVO</code>, <code className="px-1 bg-gray-200 rounded">MATRICOLA</code>, <code className="px-1 bg-gray-200 rounded">RUOLO</code></li>
-              <li>• Delimitatore: <code className="px-1 bg-gray-200 rounded">;</code></li>
-            </ul>
+      <Card className="mt-4 bg-light">
+        <Card.Body>
+          <h3 className="h6 fw-semibold text-dark mb-3">
+            ℹ️ Formato CSV richiesto
+          </h3>
+          <div className="small text-muted">
+            <div className="mb-3">
+              <span className="fw-medium text-dark">CSV Anagrafico:</span>
+              <ul className="mb-0 mt-1 ps-4">
+                <li>Colonne: <code className="px-1 bg-white rounded">NOMINATIVO</code>, <code className="px-1 bg-white rounded">MATRICOLA</code>, <code className="px-1 bg-white rounded">RUOLO</code></li>
+                <li>Delimitatore: <code className="px-1 bg-white rounded">;</code></li>
+              </ul>
+            </div>
+            <div>
+              <span className="fw-medium text-dark">CSV Compensi:</span>
+              <ul className="mb-0 mt-1 ps-4">
+                <li>Colonne: <code className="px-1 bg-white rounded">nominativo</code>, <code className="px-1 bg-white rounded">importo</code>, <code className="px-1 bg-white rounded">parti</code> (opzionale)</li>
+                <li>Delimitatore: <code className="px-1 bg-white rounded">;</code></li>
+              </ul>
+            </div>
           </div>
-          <div>
-            <span className="font-medium">CSV Compensi:</span>
-            <ul className="ml-4 mt-1">
-              <li>• Colonne: <code className="px-1 bg-gray-200 rounded">nominativo</code>, <code className="px-1 bg-gray-200 rounded">importo</code>, <code className="px-1 bg-gray-200 rounded">parti</code> (opzionale)</li>
-              <li>• Delimitatore: <code className="px-1 bg-gray-200 rounded">;</code></li>
-            </ul>
-          </div>
-        </div>
-      </div>
+        </Card.Body>
+      </Card>
     </div>
   );
 }

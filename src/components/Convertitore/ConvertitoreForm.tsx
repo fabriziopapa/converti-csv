@@ -1,5 +1,9 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
+import Card from 'react-bootstrap/Card';
+import Button from 'react-bootstrap/Button';
+import Alert from 'react-bootstrap/Alert';
+import Spinner from 'react-bootstrap/Spinner';
 import { FileUpload } from './FileUpload';
 import { ConvertitoreResult } from './ConvertitoreResult';
 import { useFileProcessor } from '../../hooks/useFileProcessor';
@@ -71,155 +75,146 @@ export function ConvertitoreForm() {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div style={{ maxWidth: '800px', margin: '0 auto' }}>
       {/* Card principale */}
-      <div className="bg-white rounded-lg shadow-md p-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-4">
-          Convertitore CSV → TXT
-        </h2>
+      <Card className="shadow-sm">
+        <Card.Body className="p-4">
+          <Card.Title as="h2" className="mb-3">
+            Convertitore CSV → TXT
+          </Card.Title>
 
-        <p className="text-gray-600 mb-6">
-          Carica un file CSV con le colonne <code className="px-2 py-1 bg-gray-100 rounded">COD_FIS</code>
-          {' '}e <code className="px-2 py-1 bg-gray-100 rounded">NETTO</code> per generare
-          un file TXT a lunghezza fissa (300 byte/record) per l'Agenzia delle Entrate.
-        </p>
+          <Card.Text className="text-muted mb-4">
+            Carica un file CSV con le colonne <code className="px-2 py-1 bg-light rounded">COD_FIS</code>
+            {' '}e <code className="px-2 py-1 bg-light rounded">NETTO</code> per generare
+            un file TXT a lunghezza fissa (300 byte/record) per l'Agenzia delle Entrate.
+          </Card.Text>
 
-        {/* Progressivo corrente */}
-        {progressivo && !result && (
-          <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-            <div className="flex items-center text-sm text-blue-800">
-              <svg
-                className="h-5 w-5 mr-2 text-blue-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              <div>
-                <span className="font-medium">Progressivo corrente:</span>
-                <span className="ml-2 font-mono">{progressivo.anno}/{progressivo.progressivo}</span>
-              </div>
-            </div>
-          </div>
-        )}
-
-        {/* Form */}
-        {!result && (
-          <form onSubmit={handleSubmit}>
-            {/* File Upload */}
-            <FileUpload
-              onFileSelect={setCsvFile}
-              disabled={isProcessing}
-            />
-
-            {/* File selezionato */}
-            {csvFile && (
-              <div className="mb-4 p-3 bg-gray-50 rounded-lg">
-                <p className="text-sm text-gray-700">
-                  <span className="font-medium">File selezionato:</span>
-                  <span className="ml-2 font-mono">{csvFile.name}</span>
-                  <span className="ml-2 text-gray-500">
-                    ({(csvFile.size / 1024).toFixed(1)} KB)
-                  </span>
-                </p>
-              </div>
-            )}
-
-            {/* Error Alert */}
-            {error && (
-              <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-                <div className="flex items-start">
-                  <svg
-                    className="h-5 w-5 text-red-600 mr-2 mt-0.5 flex-shrink-0"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                    />
-                  </svg>
-                  <div className="text-sm text-red-800">
-                    <p className="font-medium mb-1">Errore</p>
-                    <p className="whitespace-pre-wrap">{error}</p>
-                  </div>
+          {/* Progressivo corrente */}
+          {progressivo && !result && (
+            <Alert variant="info" className="mb-4">
+              <div className="d-flex align-items-center small">
+                <svg
+                  width="20"
+                  height="20"
+                  className="text-info me-2 flex-shrink-0"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <div>
+                  <span className="fw-medium">Progressivo corrente:</span>
+                  <span className="ms-2 font-monospace">{progressivo.anno}/{progressivo.progressivo}</span>
                 </div>
               </div>
-            )}
+            </Alert>
+          )}
 
-            {/* Submit Button */}
-            <button
-              type="submit"
-              disabled={!csvFile || isProcessing}
-              className={`
-                w-full py-3 px-6 rounded-lg font-semibold text-white
-                transition-all duration-200
-                ${!csvFile || isProcessing
-                  ? 'bg-gray-300 cursor-not-allowed'
-                  : 'bg-blue-600 hover:bg-blue-700 hover:shadow-lg'
-                }
-              `}
-            >
-              {isProcessing ? (
-                <span className="flex items-center justify-center">
-                  <svg
-                    className="animate-spin h-5 w-5 mr-3"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                  >
-                    <circle
-                      className="opacity-25"
-                      cx="12"
-                      cy="12"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="4"
-                    />
-                    <path
-                      className="opacity-75"
-                      fill="currentColor"
-                      d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                    />
-                  </svg>
-                  Generazione in corso...
-                </span>
-              ) : (
-                'Genera File TXT'
+          {/* Form */}
+          {!result && (
+            <form onSubmit={handleSubmit}>
+              {/* File Upload */}
+              <FileUpload
+                onFileSelect={setCsvFile}
+                disabled={isProcessing}
+              />
+
+              {/* File selezionato */}
+              {csvFile && (
+                <div className="mb-4 p-3 bg-light rounded">
+                  <p className="small mb-0 text-dark">
+                    <span className="fw-medium">File selezionato:</span>
+                    <span className="ms-2 font-monospace">{csvFile.name}</span>
+                    <span className="ms-2 text-muted">
+                      ({(csvFile.size / 1024).toFixed(1)} KB)
+                    </span>
+                  </p>
+                </div>
               )}
-            </button>
-          </form>
-        )}
 
-        {/* Result */}
-        {result && (
-          <ConvertitoreResult
-            result={result}
-            onReset={handleReset}
-          />
-        )}
-      </div>
+              {/* Error Alert */}
+              {error && (
+                <Alert variant="danger" className="mb-4">
+                  <div className="d-flex align-items-start">
+                    <svg
+                      width="20"
+                      height="20"
+                      className="text-danger me-2 flex-shrink-0 mt-1"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                      />
+                    </svg>
+                    <div className="small">
+                      <p className="fw-medium mb-1">Errore</p>
+                      <p className="mb-0" style={{ whiteSpace: 'pre-wrap' }}>{error}</p>
+                    </div>
+                  </div>
+                </Alert>
+              )}
+
+              {/* Submit Button */}
+              <Button
+                type="submit"
+                variant="primary"
+                disabled={!csvFile || isProcessing}
+                className="w-100 py-3"
+              >
+                {isProcessing ? (
+                  <>
+                    <Spinner
+                      as="span"
+                      animation="border"
+                      size="sm"
+                      role="status"
+                      aria-hidden="true"
+                      className="me-2"
+                    />
+                    Generazione in corso...
+                  </>
+                ) : (
+                  'Genera File TXT'
+                )}
+              </Button>
+            </form>
+          )}
+
+          {/* Result */}
+          {result && (
+            <ConvertitoreResult
+              result={result}
+              onReset={handleReset}
+            />
+          )}
+        </Card.Body>
+      </Card>
 
       {/* Info aggiuntive */}
-      <div className="mt-6 p-4 bg-gray-50 rounded-lg">
-        <h3 className="text-sm font-semibold text-gray-700 mb-2">
-          ℹ️ Formato CSV richiesto
-        </h3>
-        <ul className="text-sm text-gray-600 space-y-1">
-          <li>• Delimitatore: <code className="px-1 bg-gray-200 rounded">;</code> (punto e virgola)</li>
-          <li>• Colonne obbligatorie: <code className="px-1 bg-gray-200 rounded">COD_FIS</code>, <code className="px-1 bg-gray-200 rounded">NETTO</code></li>
-          <li>• Prima riga: intestazione colonne</li>
-          <li>• Formato importi: <code className="px-1 bg-gray-200 rounded">1234,56</code> o <code className="px-1 bg-gray-200 rounded">1234.56</code></li>
-        </ul>
-      </div>
+      <Card className="mt-4 bg-light">
+        <Card.Body>
+          <h3 className="h6 fw-semibold text-dark mb-3">
+            ℹ️ Formato CSV richiesto
+          </h3>
+          <ul className="small text-muted mb-0" style={{ listStyle: 'none', paddingLeft: 0 }}>
+            <li className="mb-1">• Delimitatore: <code className="px-1 bg-white rounded">;</code> (punto e virgola)</li>
+            <li className="mb-1">• Colonne obbligatorie: <code className="px-1 bg-white rounded">COD_FIS</code>, <code className="px-1 bg-white rounded">NETTO</code></li>
+            <li className="mb-1">• Prima riga: intestazione colonne</li>
+            <li className="mb-0">• Formato importi: <code className="px-1 bg-white rounded">1234,56</code> o <code className="px-1 bg-white rounded">1234.56</code></li>
+          </ul>
+        </Card.Body>
+      </Card>
     </div>
   );
 }

@@ -19,7 +19,7 @@ function App() {
   const [activeTab, setActiveTab] = useState<TabType>('convertitore');
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex flex-col">
+    <div className="app-container">
       {/* Header */}
       <Header />
 
@@ -30,7 +30,7 @@ function App() {
       />
 
       {/* Main Content */}
-      <main className="flex-1 container mx-auto px-4 py-8">
+      <main className="py-4 py-md-5">
         {activeTab === 'convertitore' ? (
           <ConvertitoreForm />
         ) : (

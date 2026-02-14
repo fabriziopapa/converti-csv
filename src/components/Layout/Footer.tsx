@@ -1,15 +1,19 @@
+import Container from 'react-bootstrap/Container';
+
 /**
  * Footer con informazioni privacy e link GitHub
  */
 export function Footer() {
   return (
-    <footer className="mt-12 py-6 border-t border-gray-200 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="text-center space-y-3">
+    <footer className="mt-5 py-4 border-top bg-white">
+      <Container>
+        <div className="text-center">
           {/* Privacy notice */}
-          <div className="flex items-center justify-center text-sm text-gray-600">
+          <div className="d-flex align-items-center justify-content-center text-muted small mb-3">
             <svg
-              className="w-4 h-4 mr-2 text-green-600"
+              width="16"
+              height="16"
+              className="text-success me-2"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -27,15 +31,17 @@ export function Footer() {
           </div>
 
           {/* GitHub link */}
-          <div className="text-sm text-gray-500">
+          <div className="small text-secondary mb-3">
             <a
               href="https://github.com/fabriziopapa/csv-to-txt-app"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-blue-600 hover:text-blue-700 hover:underline inline-flex items-center"
+              className="text-primary text-decoration-none d-inline-flex align-items-center"
             >
               <svg
-                className="w-4 h-4 mr-1"
+                width="16"
+                height="16"
+                className="me-1"
                 fill="currentColor"
                 viewBox="0 0 24 24"
               >
@@ -50,11 +56,11 @@ export function Footer() {
           </div>
 
           {/* Version info */}
-          <div className="text-xs text-gray-400">
+          <div className="text-muted" style={{ fontSize: '0.75rem' }}>
             React + TypeScript • Cloudflare Pages
           </div>
         </div>
-      </div>
+      </Container>
     </footer>
   );
 }

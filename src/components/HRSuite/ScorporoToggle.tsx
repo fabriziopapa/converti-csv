@@ -1,3 +1,7 @@
+import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
+import Accordion from 'react-bootstrap/Accordion';
+
 interface ScorporoToggleProps {
   enabled: boolean;
   onChange: (enabled: boolean) => void;
@@ -13,54 +17,60 @@ export function ScorporoToggle({
   disabled = false
 }: ScorporoToggleProps) {
   return (
-    <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
-      <div className="flex items-start">
-        <div className="flex items-center h-5">
-          <input
-            id="scorporo-toggle"
+    <Alert variant="info" className="mb-4">
+      <div className="d-flex align-items-start">
+        <div className="d-flex align-items-center" style={{ height: '20px' }}>
+          <Form.Check
             type="checkbox"
+            id="scorporo-toggle"
             checked={enabled}
             onChange={(e) => onChange(e.target.checked)}
             disabled={disabled}
-            className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 focus:ring-2 cursor-pointer disabled:cursor-not-allowed"
+            className="me-0"
+            style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
           />
         </div>
 
-        <div className="ml-3 text-sm">
-          <label
+        <div className="ms-3 small flex-grow-1">
+          <Form.Label
             htmlFor="scorporo-toggle"
-            className={`font-medium ${disabled ? 'text-gray-400' : 'text-gray-700 cursor-pointer'}`}
+            className={`fw-medium mb-1 ${disabled ? 'text-muted' : 'text-dark'}`}
+            style={{ cursor: disabled ? 'not-allowed' : 'pointer' }}
           >
             Compensi omnicomprensivi (applica scorporo contributivo)
-          </label>
+          </Form.Label>
 
-          <p className="text-xs text-gray-600 mt-1">
+          <p className="text-muted mb-2" style={{ fontSize: '0.875rem' }}>
             {enabled ? (
               <>
-                ✅ <span className="font-medium">Scorporo ATTIVO:</span> gli importi verranno divisi per il coefficiente contributivo
+                ✅ <span className="fw-medium">Scorporo ATTIVO:</span> gli importi verranno divisi per il coefficiente contributivo
                 (RD: 1.3431, Altri: 1.3270)
               </>
             ) : (
               <>
-                ⚠️ <span className="font-medium">Scorporo DISATTIVO:</span> gli importi verranno utilizzati così come sono nel CSV
+                ⚠️ <span className="fw-medium">Scorporo DISATTIVO:</span> gli importi verranno utilizzati così come sono nel CSV
               </>
             )}
           </p>
 
           {/* Info aggiuntiva */}
-          <details className="mt-2">
-            <summary className="text-xs text-blue-700 cursor-pointer hover:text-blue-800">
-              ℹ️ Cosa significa?
-            </summary>
-            <p className="text-xs text-gray-600 mt-2 pl-4 border-l-2 border-blue-300">
-              Se i compensi nel CSV sono <strong>omnicomprensivi</strong> (includono già i contributi),
-              lo scorporo li divide per ottenere l'imponibile netto.
-              <br /><br />
-              <strong>Esempio RD:</strong> 1343,10 € ÷ 1.3431 = 1000,00 €
-            </p>
-          </details>
+          <Accordion flush>
+            <Accordion.Item eventKey="0" className="border-0 bg-transparent">
+              <Accordion.Header className="p-0 bg-transparent border-0" style={{ fontSize: '0.75rem' }}>
+                <span className="text-info">ℹ️ Cosa significa?</span>
+              </Accordion.Header>
+              <Accordion.Body className="px-0 pt-2 pb-0" style={{ fontSize: '0.75rem' }}>
+                <div className="text-muted ps-3 border-start border-info border-2">
+                  Se i compensi nel CSV sono <strong>omnicomprensivi</strong> (includono già i contributi),
+                  lo scorporo li divide per ottenere l'imponibile netto.
+                  <br /><br />
+                  <strong>Esempio RD:</strong> 1343,10 € ÷ 1.3431 = 1000,00 €
+                </div>
+              </Accordion.Body>
+            </Accordion.Item>
+          </Accordion>
         </div>
       </div>
-    </div>
+    </Alert>
   );
 }

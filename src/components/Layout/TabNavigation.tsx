@@ -1,3 +1,6 @@
+import Container from 'react-bootstrap/Container';
+import Nav from 'react-bootstrap/Nav';
+
 type TabType = 'convertitore' | 'hrsuite';
 
 interface TabNavigationProps {
@@ -9,24 +12,25 @@ interface TabNavigationProps {
  * Tab navigation per switch tra Convertitore e HRSuite
  */
 export function TabNavigation({ activeTab, onTabChange }: TabNavigationProps) {
-  const baseClasses = "px-6 py-3 font-medium text-sm transition-all duration-200 border-b-2 cursor-pointer";
-  const activeClasses = "border-blue-600 text-blue-600";
-  const inactiveClasses = "border-transparent text-gray-600 hover:text-gray-800 hover:border-gray-300";
-
   return (
-    <nav className="bg-white border-b border-gray-200">
-      <div className="container mx-auto px-4">
-        <div className="flex space-x-8">
+    <nav className="bg-white border-bottom">
+      <Container>
+        <Nav variant="tabs" className="border-0">
           {/* Tab Convertitore */}
-          <button
-            onClick={() => onTabChange('convertitore')}
-            className={`${baseClasses} ${
-              activeTab === 'convertitore' ? activeClasses : inactiveClasses
-            }`}
-          >
-            <div className="flex items-center space-x-2">
+          <Nav.Item>
+            <Nav.Link
+              active={activeTab === 'convertitore'}
+              onClick={() => onTabChange('convertitore')}
+              className="px-4 py-3 d-flex align-items-center gap-2"
+              style={{
+                cursor: 'pointer',
+                borderBottomWidth: '2px',
+                borderBottomColor: activeTab === 'convertitore' ? 'var(--bs-primary)' : 'transparent'
+              }}
+            >
               <svg
-                className="w-4 h-4"
+                width="16"
+                height="16"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -39,19 +43,24 @@ export function TabNavigation({ activeTab, onTabChange }: TabNavigationProps) {
                 />
               </svg>
               <span>Convertitore CSV</span>
-            </div>
-          </button>
+            </Nav.Link>
+          </Nav.Item>
 
           {/* Tab HRSuite */}
-          <button
-            onClick={() => onTabChange('hrsuite')}
-            className={`${baseClasses} ${
-              activeTab === 'hrsuite' ? activeClasses : inactiveClasses
-            }`}
-          >
-            <div className="flex items-center space-x-2">
+          <Nav.Item>
+            <Nav.Link
+              active={activeTab === 'hrsuite'}
+              onClick={() => onTabChange('hrsuite')}
+              className="px-4 py-3 d-flex align-items-center gap-2"
+              style={{
+                cursor: 'pointer',
+                borderBottomWidth: '2px',
+                borderBottomColor: activeTab === 'hrsuite' ? 'var(--bs-primary)' : 'transparent'
+              }}
+            >
               <svg
-                className="w-4 h-4"
+                width="16"
+                height="16"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -64,10 +73,10 @@ export function TabNavigation({ activeTab, onTabChange }: TabNavigationProps) {
                 />
               </svg>
               <span>HRSuite</span>
-            </div>
-          </button>
-        </div>
-      </div>
+            </Nav.Link>
+          </Nav.Item>
+        </Nav>
+      </Container>
     </nav>
   );
 }

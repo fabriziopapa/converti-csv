@@ -1,3 +1,5 @@
+import Form from 'react-bootstrap/Form';
+
 interface DualFileUploadProps {
   anagraficFile: File | null;
   compensiFile: File | null;
@@ -26,32 +28,51 @@ export function DualFileUpload({
     onCompensiSelect(file);
   };
 
-  const labelClasses = (hasFile: boolean) => `
-    block border-2 border-dashed rounded-lg p-4 text-center cursor-pointer
-    transition-colors duration-200
-    ${disabled
-      ? 'border-gray-200 bg-gray-50 cursor-not-allowed'
-      : hasFile
-        ? 'border-green-400 bg-green-50'
-        : 'border-gray-300 hover:border-blue-500 hover:bg-blue-50'
-    }
-  `;
+  const getLabelClasses = (hasFile: boolean) => {
+    if (disabled) return 'border-secondary bg-light opacity-50';
+    if (hasFile) return 'border-success bg-success bg-opacity-10';
+    return 'border-secondary';
+  };
+
+  const getHoverStyle = () => ({
+    cursor: disabled ? 'not-allowed' : 'pointer',
+    transition: 'all 0.2s',
+    borderStyle: 'dashed'
+  });
 
   return (
-    <div className="space-y-4 mb-6">
+    <div className="mb-4">
       {/* File 1: Anagrafico */}
-      <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+      <div className="mb-3">
+        <Form.Label className="small fw-medium text-dark mb-2">
           CSV Anagrafico *
-          <span className="text-gray-500 font-normal ml-2">
+          <span className="text-muted fw-normal ms-2">
             (NOMINATIVO, MATRICOLA, RUOLO)
           </span>
-        </label>
+        </Form.Label>
 
-        <label htmlFor="anagrafico-upload" className={labelClasses(!!anagraficFile)}>
-          <div className="flex items-center justify-center">
+        <Form.Label
+          htmlFor="anagrafico-upload"
+          className={`d-block border border-2 rounded p-3 text-center mb-0 ${getLabelClasses(!!anagraficFile)}`}
+          style={getHoverStyle()}
+          onMouseEnter={(e) => {
+            if (!disabled && !anagraficFile) {
+              e.currentTarget.style.borderColor = 'var(--bs-primary)';
+              e.currentTarget.style.backgroundColor = 'rgba(13, 110, 253, 0.05)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!disabled && !anagraficFile) {
+              e.currentTarget.style.borderColor = 'var(--bs-secondary)';
+              e.currentTarget.style.backgroundColor = 'transparent';
+            }
+          }}
+        >
+          <div className="d-flex align-items-center justify-content-center">
             <svg
-              className={`h-8 w-8 mr-2 ${anagraficFile ? 'text-green-600' : 'text-gray-400'}`}
+              width="32"
+              height="32"
+              className={`me-2 ${anagraficFile ? 'text-success' : 'text-secondary'}`}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -64,42 +85,60 @@ export function DualFileUpload({
               />
             </svg>
 
-            <div className="text-left">
-              <p className={`text-sm font-medium ${anagraficFile ? 'text-green-700' : 'text-gray-600'}`}>
+            <div className="text-start">
+              <p className={`small fw-medium mb-0 ${anagraficFile ? 'text-success' : 'text-secondary'}`}>
                 {anagraficFile ? anagraficFile.name : 'Seleziona file CSV Anagrafico'}
               </p>
               {anagraficFile && (
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="mb-0 text-muted" style={{ fontSize: '0.75rem' }}>
                   {(anagraficFile.size / 1024).toFixed(1)} KB
                 </p>
               )}
             </div>
           </div>
 
-          <input
+          <Form.Control
             id="anagrafico-upload"
             type="file"
             accept=".csv,.CSV"
             onChange={handleAnagraficChange}
             disabled={disabled}
-            className="hidden"
+            className="d-none"
           />
-        </label>
+        </Form.Label>
       </div>
 
       {/* File 2: Compensi */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <Form.Label className="small fw-medium text-dark mb-2">
           CSV Compensi *
-          <span className="text-gray-500 font-normal ml-2">
+          <span className="text-muted fw-normal ms-2">
             (nominativo, importo, parti)
           </span>
-        </label>
+        </Form.Label>
 
-        <label htmlFor="compensi-upload" className={labelClasses(!!compensiFile)}>
-          <div className="flex items-center justify-center">
+        <Form.Label
+          htmlFor="compensi-upload"
+          className={`d-block border border-2 rounded p-3 text-center mb-0 ${getLabelClasses(!!compensiFile)}`}
+          style={getHoverStyle()}
+          onMouseEnter={(e) => {
+            if (!disabled && !compensiFile) {
+              e.currentTarget.style.borderColor = 'var(--bs-primary)';
+              e.currentTarget.style.backgroundColor = 'rgba(13, 110, 253, 0.05)';
+            }
+          }}
+          onMouseLeave={(e) => {
+            if (!disabled && !compensiFile) {
+              e.currentTarget.style.borderColor = 'var(--bs-secondary)';
+              e.currentTarget.style.backgroundColor = 'transparent';
+            }
+          }}
+        >
+          <div className="d-flex align-items-center justify-content-center">
             <svg
-              className={`h-8 w-8 mr-2 ${compensiFile ? 'text-green-600' : 'text-gray-400'}`}
+              width="32"
+              height="32"
+              className={`me-2 ${compensiFile ? 'text-success' : 'text-secondary'}`}
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -112,27 +151,27 @@ export function DualFileUpload({
               />
             </svg>
 
-            <div className="text-left">
-              <p className={`text-sm font-medium ${compensiFile ? 'text-green-700' : 'text-gray-600'}`}>
+            <div className="text-start">
+              <p className={`small fw-medium mb-0 ${compensiFile ? 'text-success' : 'text-secondary'}`}>
                 {compensiFile ? compensiFile.name : 'Seleziona file CSV Compensi'}
               </p>
               {compensiFile && (
-                <p className="text-xs text-gray-500 mt-1">
+                <p className="mb-0 text-muted" style={{ fontSize: '0.75rem' }}>
                   {(compensiFile.size / 1024).toFixed(1)} KB
                 </p>
               )}
             </div>
           </div>
 
-          <input
+          <Form.Control
             id="compensi-upload"
             type="file"
             accept=".csv,.CSV"
             onChange={handleCompensiChange}
             disabled={disabled}
-            className="hidden"
+            className="d-none"
           />
-        </label>
+        </Form.Label>
       </div>
     </div>
   );
