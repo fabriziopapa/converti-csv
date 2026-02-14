@@ -4,6 +4,7 @@ import { TabNavigation } from './components/Layout/TabNavigation';
 import { Footer } from './components/Layout/Footer';
 import { ConvertitoreForm } from './components/Convertitore/ConvertitoreForm';
 import { HRSuiteForm } from './components/HRSuite/HRSuiteForm';
+import { EpuraForm } from './components/Epura/EpuraForm';
 import type { TabType } from './components/Layout/TabNavigation';
 
 /**
@@ -11,7 +12,7 @@ import type { TabType } from './components/Layout/TabNavigation';
  *
  * Struttura:
  * - Header
- * - Tab Navigation (Convertitore / HRSuite)
+ * - Tab Navigation (Convertitore / HRSuite / Epura)
  * - Main Content (conditional rendering based on active tab)
  * - Footer
  */
@@ -33,8 +34,10 @@ function App() {
       <main className="py-4 py-md-5">
         {activeTab === 'convertitore' ? (
           <ConvertitoreForm />
-        ) : (
+        ) : activeTab === 'hrsuite' ? (
           <HRSuiteForm />
+        ) : (
+          <EpuraForm />
         )}
       </main>
 
