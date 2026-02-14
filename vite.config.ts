@@ -8,7 +8,7 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.ico', 'apple-touch-icon.png', 'mask-icon.svg'],
+      includeAssets: ['favicon.ico'],
       manifest: {
         name: 'Convertitore CSV - Agenzia delle Entrate',
         short_name: 'Converti CSV',
@@ -17,6 +17,11 @@ export default defineConfig({
         background_color: '#ffffff',
         display: 'standalone',
         icons: [
+          {
+            src: 'favicon.ico',
+            sizes: '48x48',
+            type: 'image/x-icon'
+          },
           {
             src: 'pwa-192x192.png',
             sizes: '192x192',
