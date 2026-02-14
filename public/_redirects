@@ -1,1 +1,12 @@
-/* /index.html 200
+# Static assets - serve directly (no redirect)
+/assets/*  200
+/sw.js  200
+/workbox-*.js  200
+/manifest.webmanifest  200
+/registerSW.js  200
+/*.ico  200
+/*.png  200
+/*.svg  200
+
+# SPA fallback - redirect all other routes to index.html
+/*  /index.html  200
