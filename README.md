@@ -68,8 +68,8 @@ converti-csv/
 │   │   ├── csvParser.ts          # Parsing CSV (PapaParse)
 │   │   ├── stringUtils.ts        # Padding e formatting
 │   │   └── dateUtils.ts          # Gestione date
-│   ├── config/    
-│   │   └── version.ts            # Gestione versione APP
+│   ├── config/
+│   │   └── version.ts            # Auto-versionamento (generato al build)
 │   ├── types/                    # TypeScript type definitions
 │   └── App.tsx                   # Root component
 ├── test-cases/                   # CSV di test edge cases
@@ -136,6 +136,28 @@ Differenza chiave:
 - **PapaParse** 5.5 (CSV parsing)
 - **file-saver** 2.0 (download file)
 - **date-fns** 4.1 (date formatting)
+
+## 🏷️ Sistema di Versionamento
+
+L'applicazione utilizza un **sistema di auto-versionamento** che genera automaticamente una versione unica ad ogni build/deploy.
+
+**Formato versione**: `DD/MM/YYYY hh:mm:ss (git-hash)`
+**Esempio**: `15/02/2026 14:35:22 (ba86ecb)`
+
+### Come funziona
+
+- 📅 **Data e ora del build**: Timestamp esatto del momento della compilazione
+- 🔖 **Hash Git**: Identificatore univoco del commit (primi 7 caratteri)
+- ♻️ **Completamente automatico**: Nessun intervento manuale necessario
+
+La versione è visibile nel **footer** dell'applicazione e viene generata automaticamente da Vite durante il processo di build tramite `vite.config.ts`.
+
+### Vantaggi
+
+- ✅ Tracciabilità completa dei deploy
+- ✅ Identificazione immediata del commit in produzione
+- ✅ Nessuna necessità di aggiornare manualmente `package.json`
+- ✅ Funziona sia in locale che su Cloudflare Pages
 
 ## 📝 Formato Record TXT
 

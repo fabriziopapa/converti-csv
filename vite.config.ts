@@ -1,9 +1,38 @@
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import { VitePWA } from 'vite-plugin-pwa'
+import { execSync } from 'child_process'
+
+// Genera versione automatica: DD/MM/YYYY hh:mm:ss (git-hash)
+function getVersion() {
+  try {
+    const gitHash = execSync('git rev-parse --short HEAD').toString().trim()
+    const now = new Date()
+    const day = String(now.getDate()).padStart(2, '0')
+    const month = String(now.getMonth() + 1).padStart(2, '0')
+    const year = now.getFullYear()
+    const hours = String(now.getHours()).padStart(2, '0')
+    const minutes = String(now.getMinutes()).padStart(2, '0')
+    const seconds = String(now.getSeconds()).padStart(2, '0')
+    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds} (${gitHash})`
+  } catch (error) {
+    // Fallback se git non è disponibile
+    const now = new Date()
+    const day = String(now.getDate()).padStart(2, '0')
+    const month = String(now.getMonth() + 1).padStart(2, '0')
+    const year = now.getFullYear()
+    const hours = String(now.getHours()).padStart(2, '0')
+    const minutes = String(now.getMinutes()).padStart(2, '0')
+    const seconds = String(now.getSeconds()).padStart(2, '0')
+    return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`
+  }
+}
 
 // https://vite.dev/config/
 export default defineConfig({
+  define: {
+    __APP_VERSION__: JSON.stringify(getVersion())
+  },
   plugins: [
     react(),
     VitePWA({
