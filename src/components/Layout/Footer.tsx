@@ -34,7 +34,7 @@ export function Footer() {
           {/* GitHub link */}
           <div className="small text-secondary mb-3">
             <a
-              href="https://github.com/fabriziopapa/csv-to-txt-app"
+              href="https://github.com/fabriziopapa/converti-csv"
               target="_blank"
               rel="noopener noreferrer"
               className="text-primary text-decoration-none d-inline-flex align-items-center"
