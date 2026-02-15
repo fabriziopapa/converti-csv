@@ -68,8 +68,6 @@ converti-csv/
 │   │   ├── csvParser.ts          # Parsing CSV (PapaParse)
 │   │   ├── stringUtils.ts        # Padding e formatting
 │   │   └── dateUtils.ts          # Gestione date
-│   ├── config/
-│   │   └── version.ts            # Auto-versionamento (generato al build)
 │   ├── types/                    # TypeScript type definitions
 │   └── App.tsx                   # Root component
 ├── test-cases/                   # CSV di test edge cases
