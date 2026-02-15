@@ -1,4 +1,8 @@
 import Container from 'react-bootstrap/Container';
+import { APP_VERSION } from '../../config/version';
+
+
+
 
 /**
  * Footer con informazioni privacy e link GitHub
@@ -57,7 +61,7 @@ export function Footer() {
 
           {/* Version info */}
           <div className="text-muted" style={{ fontSize: '0.75rem' }}>
-            React + TypeScript • Cloudflare Pages
+            React + TypeScript • Cloudflare Pages • v{APP_VERSION}
           </div>
         </div>
       </Container>
