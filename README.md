@@ -3,7 +3,7 @@
 Applicazione React+TypeScript per convertire file CSV in file TXT a lunghezza fissa (300 byte/record) per l'Agenzia delle Entrate.
 
 Migrazione completa da Flask a React per deployment su Cloudflare Pages come applicazione completamente client-side.
-La migrazione è intervenuta per https://github.com/fabriziopapa/csv-to-txt-app
+La migrazione è intervenuta per un adequamneto tecnico del progetto: https://github.com/fabriziopapa/csv-to-txt-app
 
 ## ✨ Features
 
