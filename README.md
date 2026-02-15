@@ -157,6 +157,31 @@ La versione è visibile nel **footer** dell'applicazione e viene generata automa
 - ✅ Nessuna necessità di aggiornare manualmente `package.json`
 - ✅ Funziona sia in locale che su Cloudflare Pages
 
+## 🔄 Sistema di Auto-Aggiornamento PWA
+
+L'applicazione include un **sistema intelligente di notifica aggiornamenti** per garantire che gli utenti abbiano sempre l'ultima versione.
+
+### Funzionalità
+
+- 🔔 **Toast di notifica**: Quando è disponibile un aggiornamento, appare un toast elegante in basso a destra
+- ⏱️ **Controllo automatico**: Il Service Worker controlla nuove versioni ogni ora
+- 🎯 **Aggiornamento on-demand**: L'utente può scegliere quando aggiornare (pulsante "Aggiorna Ora")
+- 📱 **Funziona su tutti i dispositivi**: Browser desktop, mobile, e PWA installate su Android/iOS
+
+### Come funziona
+
+1. Il Service Worker rileva automaticamente quando c'è una nuova versione disponibile
+2. Appare un toast con il messaggio "Aggiornamento Disponibile"
+3. L'utente può:
+   - Cliccare "Aggiorna Ora" per ricaricare immediatamente l'app
+   - Cliccare "Dopo" per continuare a usare la versione corrente
+
+### Implementazione tecnica
+
+- **Service Worker**: `registerType: 'prompt'` in `vite.config.ts`
+- **Componente**: `UpdatePrompt.tsx` gestisce la UI del prompt
+- **Controlli periodici**: Ogni 60 minuti il SW controlla se c'è un update
+
 ## 📝 Formato Record TXT
 
 ### RMA (Record Testa) - 300 byte

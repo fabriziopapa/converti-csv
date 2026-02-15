@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Header } from './components/Layout/Header';
 import { TabNavigation } from './components/Layout/TabNavigation';
 import { Footer } from './components/Layout/Footer';
+import { UpdatePrompt } from './components/Layout/UpdatePrompt';
 import { ConvertitoreForm } from './components/Convertitore/ConvertitoreForm';
 import { HRSuiteForm } from './components/HRSuite/HRSuiteForm';
 import { EpuraForm } from './components/Epura/EpuraForm';
@@ -43,6 +44,9 @@ function App() {
 
       {/* Footer */}
       <Footer />
+
+      {/* Update Prompt - Toast per notifiche aggiornamenti */}
+      <UpdatePrompt />
     </div>
   );
 }
