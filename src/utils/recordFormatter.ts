@@ -65,13 +65,15 @@ export function formatRecordRMA(
  * @param codiceFiscale - Codice fiscale (max 16 caratteri)
  * @param importo - Importo in euro (es. 100.50)
  * @param data - Data per identificativo pagamento
+ * @param flagTipologiaPagamento - Flag tipologia pagamento (default: "1", per importi >5000 usare " ")
  * @returns Record RMD di 300 byte
  */
 export function formatRecordRMD(
   progressivoRecord: number,
   codiceFiscale: string,
   importo: number,
-  data: Date
+  data: Date,
+  flagTipologiaPagamento: string = '1'
 ): string {
   const progressivoStr = padLeft(String(progressivoRecord), 7);
   const dataStr = formatDataAAAAMMGG(data);
@@ -97,7 +99,7 @@ export function formatRecordRMD(
   record += cfPadded;                           // Pos 019-034 (16 byte)
   record += idPagamento;                        // Pos 035-049 (15 byte)
   record += importoStr;                         // Pos 050-064 (15 byte)
-  record += '1';                                // Pos 065 (1 byte)
+  record += flagTipologiaPagamento;             // Pos 065 (1 byte)
   record += padRight('', 235);                  // Pos 066-300 (235 byte)
 
   return record;

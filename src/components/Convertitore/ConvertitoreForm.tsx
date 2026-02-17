@@ -5,12 +5,12 @@ import Button from 'react-bootstrap/Button';
 import Alert from 'react-bootstrap/Alert';
 import Spinner from 'react-bootstrap/Spinner';
 import { FileUpload } from './FileUpload';
-import { ConvertitoreResult } from './ConvertitoreResult';
+import { ConvertitoreResultDual } from './ConvertitoreResultDual';
 import { useFileProcessor } from '../../hooks/useFileProcessor';
 import { useProgressivo } from '../../hooks/useProgressivo';
 import { parseCSV, validateCSVColumns } from '../../utils/csvParser';
-import { generaFileTXT } from '../../utils/fileGenerator';
-import type { ConvertitoreResult as ConvertitoreResultType } from '../../types/convertitore.types';
+import { generaDueFileTXT } from '../../utils/fileGenerator';
+import type { ConvertitoreDualResult } from '../../types/convertitore.types';
 
 /**
  * Form principale per il Convertitore CSV → TXT
@@ -27,7 +27,7 @@ export function ConvertitoreForm() {
 
   // Custom hooks
   const { isProcessing, result, error, processFile, reset } =
-    useFileProcessor<ConvertitoreResultType>();
+    useFileProcessor<ConvertitoreDualResult>();
   const { progressivo } = useProgressivo();
 
   // Handler submit
@@ -63,8 +63,8 @@ export function ConvertitoreForm() {
         );
       }
 
-      // 3. Genera file TXT
-      return generaFileTXT(parsed.data, new Date());
+      // 3. Genera DUE file IRMEQS (filtrati per importo)
+      return generaDueFileTXT(parsed.data, new Date());
     });
   };
 
@@ -80,13 +80,13 @@ export function ConvertitoreForm() {
       <Card className="shadow-sm">
         <Card.Body className="p-4">
           <Card.Title as="h2" className="mb-3">
-            Convertitore CSV → TXT
+            Convertitore CSV → IRMEQS
           </Card.Title>
 
           <Card.Text className="text-muted mb-4">
             Carica un file CSV con le colonne <code className="px-2 py-1 bg-light rounded">COD_FIS</code>
             {' '}e <code className="px-2 py-1 bg-light rounded">NETTO</code> per generare
-            un file TXT a lunghezza fissa (300 byte/record) per l'Agenzia delle Entrate.
+            {' '}<strong>due file IRMEQS</strong> separati per fascia di importo (300 byte/record).
           </Card.Text>
 
           {/* Progressivo corrente */}
@@ -185,7 +185,7 @@ export function ConvertitoreForm() {
                     Generazione in corso...
                   </>
                 ) : (
-                  'Genera File TXT'
+                  'Genera File IRMEQS'
                 )}
               </Button>
             </form>
@@ -193,7 +193,7 @@ export function ConvertitoreForm() {
 
           {/* Result */}
           {result && (
-            <ConvertitoreResult
+            <ConvertitoreResultDual
               result={result}
               onReset={handleReset}
             />
